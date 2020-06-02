@@ -5,36 +5,69 @@
 @inject IJsonHelper Json
 
 @{
-    ViewData["Title"] = "Index";
+    string data = Json.Serialize(Model).ToString();
 }
 @section scripts{
-   <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script> 
-
-   <script type="text/javascript">
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
+    <script src="~/lib/knockoutMapping.js"></script>
+    <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/js/RegisterP1VM.js"></script>
+    <script type="text/javascript">
        var model = @Json.Serialize(Model);
+
+       var RegisterP1VM  = new RegisterP1VM(@Html.Raw(data));
 
        console.log(model)
 
-    ko.applyBindings(model)
-   </script>
-   
+    ko.applyBindings(RegisterP1VM)
+    </script>
+
 
 }
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
+<div class="container-fluid">
+    <div>
+        <div>
             <span>Please Enter Your Details</span>
 
+        </div>
+        <div>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3 " for="fName">First Name:</label>
+                        <input type="text" id="fName" class="form-control col-md-9" name="fName" placeholder="Enter First Name" data-bind="value: firstName" required />
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3" for="sName">Surname:</label>
+                        <input type="text" id="sName" class="form-control col-md-9" name="sName" placeholder="Enter Surname" data-bind="value: secondName" required />
+
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3" for="email">Email:</label>
+                        <input type="email" id="email" class="form-control col-md-9" name="email" placeholder="Enter Email" data-bind="value: email" required />
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3" for="phoneNum">Phone No:</label>
+                        <input type="tel" class="col-md-9" id="phoneNum" name="phoneNum" placeholder="Enter Phone Number" data-bind="value: phoneNumber" required />
+
+                    </div>
+                    <div class="form-row">
+                        <button data-bind="click: saveMemberDetails" class="btn-outline-primary"> <i class="fas fa-arrow-circle-right">  Next</i></button>
+                    </div>
+                </div>
+                <input type="hidden" id="userParamForm1" value='@Url.Action(
+            </form>
         </div>
 
     </div>
 
 </div>
 
-<h1>Please fill in details to register as member of CROWS</h1>
-<p >
-    My name is <span data-bind="text: firstName"></span>
 
-</p>
 
