@@ -24,5 +24,23 @@ namespace CrowsWebsite.Services
                 return "failure"; 
             }
         }
+
+        public Member GetMemberById(int id)
+        {
+            Member member = null;
+
+            try
+            {
+                using (var dbo = new websiteContext())
+                {
+                    member = dbo.Members.FirstOrDefault(m => m.Id == id);
+                }
+            }catch(Exception e)
+            {
+                return member;
+            }
+
+            return member;
+        }
     }
 }

@@ -1,0 +1,27 @@
+﻿@using CrowsWebsite.Models.ViewModels
+@inject IJsonHelper Json
+
+@model CrowsWebsite.Models.ViewModels.GameChooseViewModel
+
+@{
+    string data = Json.Serialize(Model).ToString();
+}
+
+<link rel="stylesheet" href="~/lib/jqueryUI/css/jquery-ui.min.css"/>
+
+@section scripts{
+<script src="~/lib/jqueryUI/js/jquery-ui.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
+    <script src="~/lib/knockoutMapping.js"></script>
+    <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/js/GameSelectionViewModel.js"></script>
+    <script type="text/javascript">
+     
+
+       var GameSelectionViewModel  = new GameSelectionViewModel(@Html.Raw(data));
+
+       
+
+    ko.applyBindings(GameSelectionViewModel)
+    </script>
+}

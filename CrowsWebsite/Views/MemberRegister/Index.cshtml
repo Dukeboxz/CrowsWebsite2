@@ -61,7 +61,8 @@
                         <button data-bind="click: saveMemberDetails" class="btn-outline-primary"> <i class="fas fa-arrow-circle-right">  Next</i></button>
                     </div>
                 </div>
-                <input type="hidden" id="userParamForm1" value='@Url.Action(
+                <input type="hidden" id="userParamForm1" value='@Url.Action("SaveMemberParams", "MemberRegister")' />
+                <input type="hidden" id="userGameSelection" value='@Url.Action("LoadGameSelectionpage", "MemberRegister")' />
             </form>
         </div>
 
