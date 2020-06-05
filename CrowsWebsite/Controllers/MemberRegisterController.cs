@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CrowsWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using CrowsWebsite.Services;
 using Microsoft.AspNetCore.Http;
 using CrowsWebsite.Models.ViewModels;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace CrowsWebsite.Controllers
 {
@@ -30,7 +29,7 @@ namespace CrowsWebsite.Controllers
             {
 
                 HttpContext.Session.SetInt32("memberId", newMember.Id);
-                return View("Index", newMember);
+                
             }
 
             return Content(returnValue);
@@ -48,10 +47,37 @@ namespace CrowsWebsite.Controllers
             {
                 throw new Exception("did not get member from database");
             }
+            member.ownedGames = new List<Game>();
+            member.LikeToPlayGames = new List<Game>();
+
+            Game testGame = new Game();
+            testGame.name = "Test Game";
+            testGame.min_players = 2;
+
+            member.ownedGames.Add(testGame);
 
             GameChooseViewModel vm = new GameChooseViewModel();
             vm.member = member;
             return View("GameSelectionPage", vm);
+        }
+
+        public IActionResult GetSuggestedGames(string term)
+        {
+            int test = 5;
+
+           List<Game> games = new List<Game>();
+
+            Game game1 = new Game();
+            game1.name = "Awesome Game";
+            game1.Id = 1;
+            games.Add(game1);
+
+            Game game2 = new Game();
+            game2.name = "Not so good game";
+            game2.Id = 2;
+            games.Add(game2);
+
+            return Json(games);
         }
     }
 }
