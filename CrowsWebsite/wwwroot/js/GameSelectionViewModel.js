@@ -33,7 +33,7 @@
                             var to = 5;
                             return {
                                 label: obj.name,
-                                value: obj.id
+                                value: obj.apiId
                             }
                         }));
                        
@@ -48,7 +48,7 @@
 
                 var selectedGame = ownedGameSuggestions.find(game => {
 
-                    return game.id === ui.item.value;
+                    return game.ApiId === ui.item.value;
                 })
 
                 self.member.ownedGames.push(selectedGame);

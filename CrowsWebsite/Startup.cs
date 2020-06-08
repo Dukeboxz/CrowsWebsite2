@@ -24,6 +24,7 @@ namespace CrowsWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
+            //services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddSession(options =>
             {
@@ -32,6 +33,8 @@ namespace CrowsWebsite
                 options.Cookie.IsEssential = true;
             });
             services.AddControllersWithViews();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +43,7 @@ namespace CrowsWebsite
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
             else
             {

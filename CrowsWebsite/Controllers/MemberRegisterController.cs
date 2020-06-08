@@ -6,11 +6,18 @@ using CrowsWebsite.Services;
 using Microsoft.AspNetCore.Http;
 using CrowsWebsite.Models.ViewModels;
 using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.Extensions.Configuration;
 
 namespace CrowsWebsite.Controllers
 {
     public class MemberRegisterController : Controller
     {
+        public IConfiguration Configuration { get; }
+
+        public MemberRegisterController(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public IActionResult Index()
         {
             Member newMember = new Member();
@@ -65,7 +72,12 @@ namespace CrowsWebsite.Controllers
         {
             int test = 5;
 
-           List<Game> games = new List<Game>();
+            
+            GameServices service = new GameServices(Configuration);
+
+
+
+            List<Game> games = service.GetGameSuggestions(term).Result;
 
             Game game1 = new Game();
             game1.name = "Awesome Game";
