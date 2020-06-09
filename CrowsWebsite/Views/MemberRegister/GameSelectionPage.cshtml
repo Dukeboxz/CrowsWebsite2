@@ -49,13 +49,13 @@
             </thead>
             <tbody data-bind="foreach: member.ownedGames">
                 <tr>
-                    <td></td>
+                    <td><img width="50px" height="50px" data-bind="attr:{src: img_url}"/></td>
                     <td data-bind="text: name"></td>
-                    <td data-bind="numeric: min_players"></td>
-                    <td data-bind="numeric: max_players"></td>
-                    <td data-bind="numeric: min_playtime"></td>
-                    <td data-bind="numeric: max_playtime"></td>
-                    @*<td><button id="ownedGameDeleteBtn" data-bind="attr={'data-gameId': Id}"></button></td>*@
+                    <td data-bind=" text: min_players"></td>
+                    <td data-bind="text: max_players"></td>
+                    <td data-bind="text: min_playtime"></td>
+                    <td data-bind="text: max_playtime"></td>
+                    <td><button data-bind="click: $root.DeleteOwnedGame" class="ownedGameDeleteBtn" >Delete</button></td>
                 </tr>
 
             </tbody>
@@ -64,6 +64,44 @@
         </table>
 
     </div>
+    <h2> Which games are you looking to play?</h2>
+    <div>
+        <h4>Games Looking to Play</h4>
+
+        <input id="gameWantedSearch" placeholder="Enter game" />
+
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Min Players</th>
+                    <th>Max Players</th>
+                    <th>Min Play Time (mins)</th>
+                    <th>Max Play Time (mins)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: member.likeToPlayGames">
+                <tr>
+                    <td><img width="50px" height="50px" data-bind="attr:{src: img_url}" /></td>
+                    <td data-bind="text: name"></td>
+                    <td data-bind=" text: min_players"></td>
+                    <td data-bind="text: max_players"></td>
+                    <td data-bind="text: min_playtime"></td>
+                    <td data-bind="text: max_playtime"></td>
+                    <td><button data-bind="click: $root.DeleteWantToPalyGame">Delete</button></td>
+                </tr>
+
+            </tbody>
+
+
+        </table>
+    </div>
+    <div>
+        <button class="btn btn-primary" data-bind="click: $root.SaveAll">Save All</button>
+    </div>
 
 </div>
  <input type="hidden" id="gameOwnedSearchUrl" value='@Url.Action("GetSuggestedGames", "MemberRegister")' />
+ <input type="hidden" id="saveAllurl" value='@Url.Action("SaveMemberGames", "MemberRegister")' />

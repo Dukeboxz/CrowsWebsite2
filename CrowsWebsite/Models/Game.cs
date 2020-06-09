@@ -7,7 +7,7 @@ namespace CrowsWebsite.Models
 {
     public class Game
     {
-        public int Id { get; set; }
+        public int GameId { get; set; }
         public string ApiId { get; set; }
 
         public string name { get; set; }
@@ -21,5 +21,8 @@ namespace CrowsWebsite.Models
 
         public string img_url { get; set; }
         public string  rules_url { get; set; }
+        public ICollection<MemberOwnedGames> MemberOwnedGames { get; set; }
+
+        public ICollection<MemberLikeToPlayGames> MemberLikeToPlayGames { get; set; }
     }
 }

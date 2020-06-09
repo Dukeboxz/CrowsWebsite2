@@ -1,4 +1,5 @@
 ﻿using CrowsWebsite.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace CrowsWebsite.Services
     {
         IConfiguration _iconfiguration;
         private readonly HttpClient client = new HttpClient();
+        DbContext db = new websiteContext();
 
-        
+
         public GameServices(IConfiguration iconfiguration)
         {
             _iconfiguration = iconfiguration;
@@ -99,15 +101,15 @@ namespace CrowsWebsite.Services
                             newGame.max_playtime = maxPlayTimeConverted ? maxPlayTemp : 0;
                         }
 
-                        //if (game.TryGetProperty("image_url", out JsonElement imageUrlElement))
-                        //{
-                        //    newGame.img_url = imageUrlElement.ToString();
-                        //}
+                        if (game.TryGetProperty("image_url", out JsonElement imageUrlElement))
+                        {
+                            newGame.img_url = imageUrlElement.ToString();
+                        }
 
-                        //if(game.TryGetProperty("url", out JsonElement ruleUrlElement))
-                        //{
-                        //    newGame.rules_url = ruleUrlElement.ToString();
-                        //}
+                        if (game.TryGetProperty("url", out JsonElement ruleUrlElement))
+                        {
+                            newGame.rules_url = ruleUrlElement.ToString();
+                        }
 
 
 
@@ -120,6 +122,64 @@ namespace CrowsWebsite.Services
             }
 
             return games;
+        }
+
+        public List<Game> SaveGamesToDatabase(List<Game> games)
+        {
+            using(var dbo = new websiteContext())
+            {
+                foreach (Game game in games)
+                {
+                    int test = 5;
+                    Game gameExists = dbo.Games.FirstOrDefault(g => g.ApiId == game.ApiId); 
+
+                    if(gameExists is null)
+                    {
+                        dbo.Games.Add(game);
+                    }
+                    else
+                    {
+                        game.GameId = gameExists.GameId;
+                    }
+                }
+
+                dbo.SaveChanges();
+
+                return games;
+            }
+           
+
+            
+        }
+
+        public void LinkGamesOwnedToMember(Member member)
+        {
+            try
+            {
+                using (var dbo = new websiteContext())
+                {
+                    foreach (Game game in member.OwnedGames)
+                    {
+                        MemberOwnedGames exists = dbo.MemberOwnedGames.FirstOrDefault(x => x.MemberId == member.MemberId && x.GameId == game.GameId);
+
+                        if (exists is null)
+                        {
+                            MemberOwnedGames newRecord = new MemberOwnedGames();
+                            //newRecord.Member = member;
+                            newRecord.MemberId = member.MemberId;
+                           // newRecord.Game = game;
+                            newRecord.GameId = game.GameId;
+
+                            dbo.MemberOwnedGames.Add(newRecord);
+                        }
+                    }
+
+                    dbo.SaveChanges();
+                }
+            } catch (Exception e)
+            {
+                throw new Exception("Couold not save MemberGamesOwned");
+             }
         }
     }
 }

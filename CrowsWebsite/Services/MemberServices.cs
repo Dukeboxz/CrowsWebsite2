@@ -14,7 +14,22 @@ namespace CrowsWebsite.Services
         {
             try
             {
-                db.Add<Member>(member);
+                Member alreadyThere = null;
+                using (var dbo = new websiteContext())
+                {
+                    alreadyThere = dbo.Members.FirstOrDefault(m => m.MemberId == member.MemberId);
+                }
+               
+                if(alreadyThere is null)
+                {
+                    db.Add<Member>(member);
+                }
+                else
+                {
+                    db.Update(member);
+                }
+
+                
                 db.SaveChanges();
 
                 return "success"; 
@@ -33,7 +48,7 @@ namespace CrowsWebsite.Services
             {
                 using (var dbo = new websiteContext())
                 {
-                    member = dbo.Members.FirstOrDefault(m => m.Id == id);
+                    member = dbo.Members.FirstOrDefault(m => m.MemberId == id);
                 }
             }catch(Exception e)
             {
@@ -41,6 +56,51 @@ namespace CrowsWebsite.Services
             }
 
             return member;
+        }
+
+        public List<Game> GetMemberOwnedGames(int memberId)
+        {
+            try
+            {
+                List<Game> games;
+                using (var dbo = new websiteContext())
+                {
+                    games = dbo.MemberOwnedGames
+                        .Where(x => x.MemberId == memberId)
+                        .Select(x => x.Game).ToList();
+
+                }
+
+                return games;
+            }catch(Exception e)
+            {
+                throw new Exception("Could not get want to play games");
+            }
+          
+        }
+
+        public List<Game> GetMemberLikeToPlayGames(int memberId)
+        {
+            List<Game> games;
+
+            try
+            {
+
+                using (var dbo = new websiteContext())
+                {
+                    games = dbo.MemberLikeToPlayGames
+                        .Where(x => x.MemberId == memberId)
+                        .Select(x => x.Game).ToList();
+                }
+
+                return games;
+            }catch(Exception e)
+            {
+                throw new Exception("could not get member like to play games");
+            }
+
+
+
         }
     }
 }

@@ -20,8 +20,9 @@ namespace CrowsWebsite.Controllers
         }
         public IActionResult Index()
         {
+
             Member newMember = new Member();
-            newMember.FirstName = "Stephen";
+             
             return View("Index", newMember);
         }
 
@@ -35,7 +36,7 @@ namespace CrowsWebsite.Controllers
             if (returnValue.Equals("success"))
             {
 
-                HttpContext.Session.SetInt32("memberId", newMember.Id);
+                HttpContext.Session.SetInt32("memberId", newMember.MemberId);
                 
             }
 
@@ -46,6 +47,7 @@ namespace CrowsWebsite.Controllers
         {
             int memberId = (int)HttpContext.Session.GetInt32("memberId");
 
+            
             MemberServices ms = new MemberServices();
 
             Member member = ms.GetMemberById(memberId); 
@@ -54,14 +56,19 @@ namespace CrowsWebsite.Controllers
             {
                 throw new Exception("did not get member from database");
             }
-            member.ownedGames = new List<Game>();
-            member.LikeToPlayGames = new List<Game>();
 
-            Game testGame = new Game();
-            testGame.name = "Test Game";
-            testGame.min_players = 2;
+            if(member.OwnedGames is null)
+            {
+                member.OwnedGames = new List<Game>();
+            }
+            if(member.LikeToPlayGames is null)
+            {
+                member.LikeToPlayGames = new List<Game>();
+            }
 
-            member.ownedGames.Add(testGame);
+            member.OwnedGames = ms.GetMemberOwnedGames(memberId);
+
+           
 
             GameChooseViewModel vm = new GameChooseViewModel();
             vm.member = member;
@@ -70,8 +77,7 @@ namespace CrowsWebsite.Controllers
 
         public IActionResult GetSuggestedGames(string term)
         {
-            int test = 5;
-
+            
             
             GameServices service = new GameServices(Configuration);
 
@@ -79,17 +85,29 @@ namespace CrowsWebsite.Controllers
 
             List<Game> games = service.GetGameSuggestions(term).Result;
 
-            Game game1 = new Game();
-            game1.name = "Awesome Game";
-            game1.Id = 1;
-            games.Add(game1);
-
-            Game game2 = new Game();
-            game2.name = "Not so good game";
-            game2.Id = 2;
-            games.Add(game2);
+            
 
             return Json(games);
+        }
+
+        public IActionResult SaveMemberGames(Member member)
+        {
+            GameServices gameService = new GameServices(Configuration);
+            MemberServices memberService = new MemberServices();
+
+            try
+            {
+                gameService.SaveGamesToDatabase(member.OwnedGames);
+               // gameService.SaveGamesToDatabase(member.LikeToPlayGames);
+
+                gameService.LinkGamesOwnedToMember(member);
+
+
+                return Content("success");
+            }catch(Exception e)
+            {
+                return Content("failure");
+            }
         }
     }
 }

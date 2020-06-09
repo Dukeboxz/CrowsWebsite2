@@ -12,5 +12,8 @@ namespace CrowsWebsite.Models
         public DateTime DateOfSession { get; set; }
 
         public List<Member> Atendees { get; set; }
+
+        public List<GamesBeingPlayed> GamesBeingPlayed { get; set; }
+
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrowsWebsite.Migrations
 {
     [DbContext(typeof(websiteContext))]
-    [Migration("20200601103638_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200609130551_initCommit")]
+    partial class initCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace CrowsWebsite.Migrations
 
             modelBuilder.Entity("CrowsWebsite.Models.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GameId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -58,13 +58,38 @@ namespace CrowsWebsite.Migrations
                     b.Property<string>("rules_url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("GameId");
 
                     b.HasIndex("MemberId");
 
                     b.HasIndex("MemberId1");
 
                     b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("CrowsWebsite.Models.GamesBeingPlayed", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GamingSessionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpacesAvailable")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("GamingSessionId");
+
+                    b.ToTable("GamesBeingPlayed");
                 });
 
             modelBuilder.Entity("CrowsWebsite.Models.GamingSession", b =>
@@ -84,7 +109,7 @@ namespace CrowsWebsite.Migrations
 
             modelBuilder.Entity("CrowsWebsite.Models.Member", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MemberId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -95,6 +120,9 @@ namespace CrowsWebsite.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GamesBeingPlayedId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("GamingSessionId")
                         .HasColumnType("int");
 
@@ -104,11 +132,28 @@ namespace CrowsWebsite.Migrations
                     b.Property<string>("SecondName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MemberId");
+
+                    b.HasIndex("GamesBeingPlayedId");
 
                     b.HasIndex("GamingSessionId");
 
                     b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("CrowsWebsite.Models.MemberOwnedGames", b =>
+                {
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MemberId", "GameId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("MemberOwnedGames");
                 });
 
             modelBuilder.Entity("CrowsWebsite.Models.Game", b =>
@@ -118,15 +163,45 @@ namespace CrowsWebsite.Migrations
                         .HasForeignKey("MemberId");
 
                     b.HasOne("CrowsWebsite.Models.Member", null)
-                        .WithMany("ownedGames")
+                        .WithMany("OwnedGames")
                         .HasForeignKey("MemberId1");
+                });
+
+            modelBuilder.Entity("CrowsWebsite.Models.GamesBeingPlayed", b =>
+                {
+                    b.HasOne("CrowsWebsite.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
+
+                    b.HasOne("CrowsWebsite.Models.GamingSession", null)
+                        .WithMany("GamesBeingPlayed")
+                        .HasForeignKey("GamingSessionId");
                 });
 
             modelBuilder.Entity("CrowsWebsite.Models.Member", b =>
                 {
+                    b.HasOne("CrowsWebsite.Models.GamesBeingPlayed", null)
+                        .WithMany("Players")
+                        .HasForeignKey("GamesBeingPlayedId");
+
                     b.HasOne("CrowsWebsite.Models.GamingSession", null)
                         .WithMany("Atendees")
                         .HasForeignKey("GamingSessionId");
+                });
+
+            modelBuilder.Entity("CrowsWebsite.Models.MemberOwnedGames", b =>
+                {
+                    b.HasOne("CrowsWebsite.Models.Game", "Game")
+                        .WithMany("MemberOwnedGames")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CrowsWebsite.Models.Member", "Member")
+                        .WithMany("MemberOwnedGames")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
