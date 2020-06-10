@@ -1,0 +1,32 @@
+﻿@using CrowsWebsite.Models;
+
+@model CrowsWebsite.Models.Member
+@inject IJsonHelper Json
+
+@{
+    string data = Json.Serialize(Model).ToString();
+}
+@section scripts{
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
+    <script src="~/lib/knockoutMapping.js"></script>
+    <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/js/RegisterP1VM.js"></script>
+    <script type="text/javascript">
+       var model = @Json.Serialize(Model);
+
+       var AdminViewModel  = new AdminViewModel(@Html.Raw(data));
+
+       console.log(model)
+
+    ko.applyBindings(AdminViewModel)
+    </script>
+
+
+}
+
+<div class="container-fluid">
+    <div>
+        <button></button>
+    </div>
+
+</div>

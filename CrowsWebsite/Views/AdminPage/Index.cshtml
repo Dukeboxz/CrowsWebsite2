@@ -1,0 +1,43 @@
+﻿@using CrowsWebsite.Models;
+
+@model CrowsWebsite.Models.Member
+@inject IJsonHelper Json
+
+@{
+    string data = Json.Serialize(Model).ToString();
+}
+@section scripts{
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
+    <script src="~/lib/knockoutMapping.js"></script>
+    <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/js/AdminViewModel.js"></script>
+    <script type="text/javascript">
+       var model = @Json.Serialize(Model);
+
+       var AdminViewModel  = new AdminViewModel(@Html.Raw(data));
+
+       console.log(model)
+
+    ko.applyBindings(AdminViewModel)
+    </script>
+
+
+}
+
+<div class="container-fluid">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active adminNav" id="GameNightTab" data_id="1" href="#">Game Nights</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link adminNav" id="MemberTab" data_id="2" href="#" >Members</a>
+        </li>
+        
+    </ul>
+
+    <div id="tabContents"> </div>
+
+</div>
+<input type="hidden" id="GetMemberTabUrl" value='@Url.Action("GetMembersForAdmin", "AdminPage")' />
+<input type="hidden" id="GetGameNightTabUrl" value='@Url.Action("GetGameNightsForAdmin", "AdminPage")' />

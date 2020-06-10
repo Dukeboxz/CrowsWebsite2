@@ -15,5 +15,8 @@ namespace CrowsWebsite.Models
 
         public List<GamesBeingPlayed> GamesBeingPlayed { get; set; }
 
+        public string Description { get; set; }
+
+
     }
 }
