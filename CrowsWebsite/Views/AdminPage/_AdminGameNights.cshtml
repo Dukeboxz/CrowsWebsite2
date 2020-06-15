@@ -6,6 +6,8 @@
 @{
     string data = Json.Serialize(Model).ToString();
 }
+
+    <link rel="stylesheet" href="~/lib/jqueryUI/css/jquery-ui.min.css" />
 @section scripts{
     <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
     <script src="~/lib/knockoutMapping.js"></script>
@@ -26,7 +28,49 @@
 
 <div class="container-fluid">
     <div>
-        <button></button>
+        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#AddGameNightModal" >Add Game Night  <i class="far fa-plus-square"></i></button>
+    </div>
+    <div data-bind="foreach: $root">
+        <div data-bind="DateOfSession"></div>
     </div>
 
+</div>
+
+<div class="modal fade" id="AddGameNightModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Games Night</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form>
+                        <fieldset>
+                            <div class="form-row">
+                                <div class="form-group col-md-6" >
+                                    <label for="gameNightDate">Date of Game Night</label>
+                                    <input type="text" id="gameNightDate" />
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="gameNightDescription">Description</label>
+                                    <input  id="gameNightDescription"/>
+
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save Game Night</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>

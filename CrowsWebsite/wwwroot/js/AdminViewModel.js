@@ -48,6 +48,10 @@
         })
     }
 
+    self.ShowModalToAddGameNight = function () {
+
+    }
+
     $(function () {
 
 
@@ -59,8 +63,10 @@
                 $('#MemberTab').removeClass("active");
                 $('#GameNightTab').addClass("active");
 
-                $('#tabContents').html(""); 
-                $('#tabContents').html("<p>Game night tab</p>")
+                GetGameNightTabContent();
+
+                //$('#tabContents').html(""); 
+                //$('#tabContents').html("<p>Game night tab</p>")
 
             } else {
 
@@ -69,12 +75,18 @@
 
                 GetMembertabContents();
 
-                $('#tabContents').html("");
-                $('#tabContents').html("<p>Member tab</p>")
+                //$('#tabContents').html("");
+                //$('#tabContents').html("<p>Member tab</p>")
             }
 
           
         });
+
+    });
+
+    $(function () {
+
+        $('#gameNightDate').datepicker();
 
     });
 

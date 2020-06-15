@@ -7,10 +7,12 @@
     string data = Json.Serialize(Model).ToString();
 }
 @section scripts{
+    <script src="~/lib/jqueryUI/js/jquery-ui.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
     <script src="~/lib/knockoutMapping.js"></script>
     <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="~/js/AdminViewModel.js"></script>
+    
     <script type="text/javascript">
        var model = @Json.Serialize(Model);
 
@@ -40,4 +42,4 @@
 
 </div>
 <input type="hidden" id="GetMemberTabUrl" value='@Url.Action("GetMembersForAdmin", "AdminPage")' />
-<input type="hidden" id="GetGameNightTabUrl" value='@Url.Action("GetGameNightsForAdmin", "AdminPage")' />
+<input type="hidden" id="GetGameNightTabUrl" value='@Url.Action("GetGamingNightsForAdmin", "AdminPage")' />

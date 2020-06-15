@@ -20,9 +20,10 @@ namespace CrowsWebsite.Controllers
             return Content("Not Done Yet");
         }
 
-        public IActionResult GetGamingNightsForAmin()
+        public IActionResult GetGamingNightsForAdmin()
         {
-            return Content("Not Done Yet");
+            List<GamingSession> gameSessions = new List<GamingSession>();
+            return PartialView("_AdminGameNights", gameSessions);
         }
 
 
