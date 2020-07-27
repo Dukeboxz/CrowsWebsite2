@@ -42,13 +42,12 @@ namespace CrowsWebsite.Services
 
         public async Task<List<Game>> MakeHttpRequest( string url)
         {
-            var stringTask = client.GetStringAsync(url);
+            var stringTask =  client.GetStringAsync(url);
 
             string msg = stringTask.Result.ToString();
 
             List<Game> games = DeserializeJsonToGames(msg);
-            int test = 5;
-
+         
             return games;
         }
 

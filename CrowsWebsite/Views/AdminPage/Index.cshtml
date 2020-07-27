@@ -7,6 +7,7 @@
     string data = Json.Serialize(Model).ToString();
 }
 @section scripts{
+    <script src="~/lib/jqueryUI/js/jquery-ui.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
     <script src="~/lib/knockoutMapping.js"></script>
     <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
@@ -16,7 +17,7 @@
 
        var AdminViewModel  = new AdminViewModel(@Html.Raw(data));
 
-       console.log(model)
+       
 
     ko.applyBindings(AdminViewModel)
     </script>
@@ -28,10 +29,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active adminNav" id="GameNightTab" data_id="1" href="#">Game Nights</a>
+            <a class="nav-link adminNav" id="GameNightTab" data_id="1" href="#">Game Nights</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link adminNav" id="MemberTab" data_id="2" href="#" >Members</a>
+            <a class="nav-link active adminNav" id="MemberTab" data_id="2" href="#" >Members</a>
         </li>
         
     </ul>

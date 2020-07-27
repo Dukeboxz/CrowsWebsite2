@@ -26,6 +26,13 @@
 
     }
 
+    self.CreateGameNight = function () {
+
+        var date = $('#gameNightDatePicker').val();
+        var description = $('#GameNightDescription').val();
+        var tes = 5; 
+    }
+
     function GetGameNightTabContent() {
 
         var url = $('#GetGameNightTabUrl').val();
@@ -34,10 +41,12 @@
             url: url,
             data: {},
             type: 'POST',
+            dataType:"html",
             success: function (data) {
 
                 $('#tabContents').html("");
                 $('#tabContents').html(data);
+                $('#gameNightDatePicker').datepicker();
 
             }, error: function (error) {
 
@@ -59,8 +68,7 @@
                 $('#MemberTab').removeClass("active");
                 $('#GameNightTab').addClass("active");
 
-                $('#tabContents').html(""); 
-                $('#tabContents').html("<p>Game night tab</p>")
+                GetGameNightTabContent();
 
             } else {
 
@@ -69,13 +77,26 @@
 
                 GetMembertabContents();
 
-                $('#tabContents').html("");
-                $('#tabContents').html("<p>Member tab</p>")
+               
             }
 
           
         });
 
+    
+
+        $('#CreateGameNightButton').on("click", function () {
+
+       
+        })
+
+
     });
+
+    $(function () {
+
+        GetMembertabContents()
+        
+    })
 
 }

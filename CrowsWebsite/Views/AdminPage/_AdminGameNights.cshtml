@@ -6,27 +6,84 @@
 @{
     string data = Json.Serialize(Model).ToString();
 }
+
+    <link rel="stylesheet" href="~/lib/jqueryUI/css/jquery-ui.min.css" />
 @section scripts{
+    <script src="~/lib/jqueryUI/js/jquery-ui.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>
     <script src="~/lib/knockoutMapping.js"></script>
     <script src="https://kit.fontawesome.com/a7864e965e.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="~/js/RegisterP1VM.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="~/js/GameNightAdminVM.js"></script>
+    <script >
        var model = @Json.Serialize(Model);
 
-       var AdminViewModel  = new AdminViewModel(@Html.Raw(data));
+        var GameNightAdminVM = new GameNightAdminVM(@Html.Raw(data));
 
-       console.log(model)
+        console.log(model);
 
-    ko.applyBindings(AdminViewModel)
+        console.log("in AdminGame Night")
+      
+
+        ko.applyBindings(GameNightAdminVM)
+
+     
     </script>
+
 
 
 }
 
 <div class="container-fluid">
+    <div class="col-md-12">
+        <div class="GameNightList col-md-9">
+
+        </div>
+        <div class="AddGameNight col-md-12">
+            <form>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-md-6">Date:</label>
+                        <input id="gameNightDatePicker" class="col-md-6" type="text"/> 
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6">Description</label>
+                        <input class="col-md-6" type="text" id="GameNightDescription" />
+
+                    </div>
+                </fieldset>
+            </form>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NewGamesNightModal">Add Game Night  <i class="fa fa-plus" aria-hidden="true"></i></button>
+        </div>
+
+    </div>
     <div>
-        <button></button>
+        
     </div>
 
+    <div>
+
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="NewGamesNightModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Create New Game Night</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="CreateGameNightButton" data-bind="click: $root.CreateGameNight" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
 </div>

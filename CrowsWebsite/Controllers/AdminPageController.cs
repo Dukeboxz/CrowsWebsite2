@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrowsWebsite.Models;
+using CrowsWebsite.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrowsWebsite.Controllers
@@ -20,9 +21,12 @@ namespace CrowsWebsite.Controllers
             return Content("Not Done Yet");
         }
 
-        public IActionResult GetGamingNightsForAmin()
+        public IActionResult GetGameNightsForAdmin()
         {
-            return Content("Not Done Yet");
+            GamingSessionService service = new GamingSessionService();
+            List<GamingSession> gamingSession = service.GetAllGamingSessions();
+
+            return PartialView("_AdminGameNights", gamingSession);
         }
 
 
